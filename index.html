@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Doe - Principal IT Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS variables for theming */
+        :root {
+            --color-background: #121212;
+            --color-surface: #1E1E1E;
+            --color-primary: #D4AF37;
+            --color-text: #E0E0E0;
+            --color-text-secondary: #A0A0A0;
+        }
+        html.light {
+            --color-background: #F5F5F5;
+            --color-surface: #FFFFFF;
+            --color-primary: #B8860B;
+            --color-text: #212121;
+            --color-text-secondary: #5f6368;
+        }
+        body {
+            background-color: var(--color-background);
+            color: var(--color-text);
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .font-heading { font-family: 'Playfair Display', serif; }
+        .font-nav { font-family: 'Oswald', sans-serif; }
+        .bg-theme-background { background-color: var(--color-background); }
+        .bg-theme-surface { background-color: var(--color-surface); }
+        .text-theme-primary { color: var(--color-primary); }
+        .text-theme-text { color: var(--color-text); }
+        .text-theme-text-secondary { color: var(--color-text-secondary); }
+        .bg-theme-primary { background-color: var(--color-primary); }
+        .border-theme-primary { border-color: var(--color-primary); }
+        .shadow-theme-primary\/20 { box-shadow: 0 4px 14px 0 rgba(212, 175, 55, 0.2); }
+        .bg-theme-primary\/10 { background-color: rgba(212, 175, 55, 0.1); }
+        .border-theme-primary\/20 { border-color: rgba(212, 175, 55, 0.2); }
+
+        /* Orbiting Lines Animation */
+        .orbiting-lines .line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+            border-radius: 50%;
+            animation: orbit 10s linear infinite;
+            opacity: 0.5;
+        }
+        .orbiting-lines .line:nth-child(2) { animation-duration: 12s; animation-delay: -3s; }
+        .orbiting-lines .line:nth-child(3) { animation-duration: 15s; animation-delay: -5s; }
+        @keyframes orbit {
+            from { transform: translate(-50%, -50%) rotate(0deg) translateX(120px) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg) translateX(120px) rotate(-360deg); }
+        }
+
+        /* Animate on scroll utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s, transform 1s;
+            transition-timing-function: ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered Text Animation */
+        .stagger-word {
+            display: inline-block;
+            overflow: hidden;
+            padding-bottom: 0.2rem;
+        }
+        .stagger-word > span {
+            display: inline-block;
+            transform: translateY(100%);
+            transition: transform 0.7s ease-out;
+        }
+        .stagger-word.visible > span {
+            transform: translateY(0);
+        }
+        .bg-grid-gold-900\/\[0\.1\] { 
+            background-image: linear-gradient(rgba(212, 175, 55, 0.5) 1px, transparent 1px), linear-gradient(to right, rgba(212, 175, 55, 0.5) 1px, var(--color-background) 1px); 
+            background-size: 3rem 3rem; 
+            opacity: 0.1; 
+        }
+    </style>
+</head>
+<body class="transition-colors duration-500">
+
+    <!-- Vertical Navigation -->
+    <nav id="vertical-nav" class="hidden md:flex flex-col items-start justify-center w-36 fixed top-0 left-0 h-full z-50 p-8">
+        <div class="absolute left-4 top-0 h-full w-0.5 bg-theme-primary/20">
+            <div id="nav-progress-bar" class="absolute left-0 top-0 w-full bg-theme-primary transition-all duration-200 ease-linear" style="height: 0%"></div>
+        </div>
+        <div class="flex flex-col gap-4 relative pl-6">
+            <a href="#home" data-nav-id="home" class="nav-link font-nav uppercase tracking-widest text-sm transition-all duration-300">Home</a>
+            <a href="#about" data-nav-id="about" class="nav-link font-nav uppercase tracking-widest text-sm transition-all duration-300">About</a>
+            <a href="#implementations" data-nav-id="implementations" class="nav-link font-nav uppercase tracking-widest text-sm transition-all duration-300">Work</a>
+            <a href="#contributions" data-nav-id="contributions" class="nav-link font-nav uppercase tracking-widest text-sm transition-all duration-300">Papers</a>
+            <a href="#technologies" data-nav-id="technologies" class="nav-link font-nav uppercase tracking-widest text-sm transition-all duration-300">Skills</a>
+            <a href="#contact" data-nav-id="contact" class="nav-link font-nav uppercase tracking-widest text-sm transition-all duration-300">Contact</a>
+        </div>
+        <div class="mt-auto pl-4">
+            <button id="theme-toggle" aria-label="Toggle theme" class="p-2 rounded-full text-theme-text-secondary hover:text-theme-primary hover:bg-theme-primary/10 transition-all outline-none focus-visible:ring-2 focus-visible:ring-theme-primary">
+                <!-- SVG will be injected by JS -->
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sticky Image -->
+    <div id="sticky-image" class="fixed top-6 right-6 z-50 transition-all duration-500 ease-in-out opacity-0 scale-75 pointer-events-none">
+        <img src="https://placehold.co/400x400/1E1E1E/D4AF37?text=JD" alt="John Doe" class="rounded-full w-20 h-20 object-cover shadow-2xl shadow-theme-primary/20 border-2 border-theme-primary/50" />
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:pl-36">
+        <main>
+            <!-- Hero Section -->
+            <section id="home" class="min-h-screen flex items-center relative px-6 md:px-12 overflow-hidden">
+                <div class="absolute inset-0 bg-grid-gold-900/[0.1] [mask-image:radial-gradient(ellipse_at_center,white_20%,transparent_70%)]"></div>
+                <div class="relative z-10 grid md:grid-cols-2 gap-12 md:gap-16 items-center w-full max-w-7xl mx-auto">
+                    <div>
+                        <h1 class="stagger-text font-heading text-5xl md:text-7xl font-extrabold text-theme-text leading-tight tracking-tight">John Doe</h1>
+                        <h2 class="stagger-text font-heading text-3xl md:text-5xl font-semibold text-theme-primary mt-2">Principal IT Architect</h2>
+                        <div class="reveal mt-6 text-lg max-w-2xl text-theme-text-secondary">
+                            <p>I design and build resilient, high-performance digital infrastructures that empower enterprise-level organizations.</p>
+                        </div>
+                        <div class="reveal mt-10 flex gap-4">
+                            <a href="#contact" class="bg-theme-primary text-black font-semibold px-8 py-3 rounded-lg hover:bg-opacity-80 transition-all transform hover:scale-105 shadow-lg shadow-theme-primary/20">Connect With Me</a>
+                        </div>
+                    </div>
+                    <div id="hero-image-container" class="flex justify-center items-center transition-all duration-700 ease-out">
+                        <div class="relative">
+                            <div class="absolute inset-0 orbiting-lines">
+                                <div class="line"></div><div class="line"></div><div class="line"></div>
+                            </div>
+                            <img src="https://placehold.co/400x400/1E1E1E/D4AF37?text=JD" alt="A professional headshot of John Doe" class="relative z-10 rounded-full w-80 h-80 lg:w-96 lg:h-96 object-cover shadow-2xl shadow-theme-primary/20"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other Sections -->
+            <div id="content-sections">
+                <section id="about" class="py-20 md:py-28 px-6 md:px-12">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="reveal">
+                            <h2 class="font-heading text-4xl font-bold text-theme-text mb-4">About</h2>
+                            <div class="w-24 h-1 bg-theme-primary mb-12 origin-left transition-transform duration-700 ease-out scale-x-0"></div>
+                        </div>
+                        <div class="reveal"><p class="max-w-4xl text-lg text-theme-text-secondary space-y-6">With over a decade of experience architecting mission-critical systems, my work is driven by a passion for solving complex puzzles at scale. I specialize in the convergence of cloud infrastructure, distributed systems, and robust security protocols to create technology ecosystems that are not only powerful but also elegant and maintainable.<br/><br/>I believe in a first-principles approach, leading teams to build with clarity, purpose, and a forward-looking perspective. My goal is to translate ambitious business strategies into tangible, resilient technology assets. Outside of the digital realm, I enjoy delving into game theory and contributing to open-source cryptography projects.</p></div>
+                    </div>
+                </section>
+                <section id="implementations" class="py-20 md:py-28 px-6 md:px-12">
+                    <!-- Implementations content will be injected by JS -->
+                </section>
+                <section id="contributions" class="py-20 md:py-28 px-6 md:px-12">
+                     <!-- Contributions content will be injected by JS -->
+                </section>
+                <section id="technologies" class="py-20 md:py-28 px-6 md:px-12">
+                    <!-- Technologies content will be injected by JS -->
+                </section>
+                <section id="contact" class="py-20 md:py-28 px-6 md:px-12">
+                    <!-- Contact content will be injected by JS -->
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const implementationsData = [
+              { id: 1, title: "Next-Gen Fintech Platform", description: "Architected a scalable, secure fintech platform for real-time transaction processing using a microservices-based approach.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=Fintech+Platform", tags: ["C#", ".NET 8", "Azure", "React"], link: "#" },
+              { id: 2, title: "AI-Powered Logistics Optimizer", description: "Developed an AI model to optimize global supply chain routes, reducing fuel costs by 15% and delivery times by 20%.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=AI+Logistics", tags: ["Python", "TensorFlow", "GCP", "Kubernetes"], link: "#" },
+              { id: 3, title: "Decentralized Identity Solution", description: "Built a decentralized identity management system using blockchain, giving users full control over their personal data.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=Decentralized+ID", tags: ["Go", "Cosmos SDK", "Cryptography"], link: "#" },
+              { id: 4, title: "Cloud Transformation for Healthcare", description: "Led a major cloud migration for a healthcare provider, ensuring HIPAA compliance and enhancing data interoperability with FHIR.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=Healthcare+Cloud", tags: [".NET", "Azure", "FHIR", "Security"], link: "#" },
+              { id: 5, title: "Interactive E-Learning Portal", description: "Created a rich, interactive e-learning portal with adaptive learning paths and real-time collaboration features for students.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=E-Learning", tags: ["React", "Node.js", "WebSocket", "MongoDB"], link: "#" },
+              { id: 6, title: "High-Frequency Trading Engine", description: "Engineered a low-latency trading engine capable of processing millions of transactions per second with minimal jitter.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=HFT+Engine", tags: ["C++", "Linux", "FPGA", "Networking"], link: "#" },
+              { id: 7, title: "Predictive Maintenance for IoT", description: "An IoT solution that uses sensor data and ML to predict equipment failures, enabling proactive maintenance and reducing downtime.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=IoT+Maintenance", tags: ["Python", "AWS IoT", "TimescaleDB", "Grafana"], link: "#" },
+              { id: 8, title: "Automated Code Analysis Tool", description: "A static analysis tool that integrates into CI/CD pipelines to detect security vulnerabilities and code quality issues automatically.", imageUrl: "https://placehold.co/600x400/121212/D4AF37?text=Code+Analyzer", tags: ["Java", "ANTLR", "Jenkins", "Docker"], link: "#" },
+            ];
+            const contributionsData = [
+                { id: 1, title: "A Novel Framework for Self-Healing Microservices", description: "Published research on an autonomous framework that detects and recovers from service failures in distributed systems.", link: "#" },
+                { id: 2, title: "Privacy-Preserving Machine Learning via Federated Averaging", description: "Investigating advanced techniques in federated learning to train models without compromising sensitive user data.", link: "#" },
+                { id: 3, title: "Formal Verification of Smart Contract Security", description: "A methodology for mathematically proving the security and correctness of blockchain smart contracts to prevent exploits.", link: "#" },
+                { id: 4, title: "Energy-Efficient Resource Allocation in Cloud Data Centers", description: "Research on algorithmic strategies to reduce the carbon footprint of large-scale data centers through intelligent workload scheduling.", link: "#" },
+            ];
+            const technologiesData = [ ".NET 8", "C#", "Java", "Spring Boot", "Go", "Python", "Node.js", "REST APIs", "gRPC", "Microservices", "React", "TypeScript", "JavaScript", "HTML5", "Tailwind CSS", "Next.js", "Vue.js", "Azure", "AWS", "GCP", "Docker", "Kubernetes", "Terraform", "Ansible", "CI/CD", "Jenkins", "SQL Server", "PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Apache Kafka", "Spark", "System Architecture", "Security", "Agile", "Scrum", "TDD"];
+            
+            // --- SVG ICONS ---
+            const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+            const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`;
+
+            // --- DOM ELEMENTS ---
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const navProgressBar = document.getElementById('nav-progress-bar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section[id]');
+            const heroSection = document.getElementById('home');
+            const stickyImage = document.getElementById('sticky-image');
+            const heroImageContainer = document.getElementById('hero-image-container');
+
+            // --- INJECT DYNAMIC CONTENT ---
+            const createSectionHeader = (title) => `
+                <div class="max-w-7xl mx-auto">
+                    <div class="reveal">
+                        <h2 class="font-heading text-4xl font-bold text-theme-text mb-4">${title}</h2>
+                        <div class="w-24 h-1 bg-theme-primary mb-12 origin-left transition-transform duration-700 ease-out scale-x-0"></div>
+                    </div>
+                </div>`;
+
+            // Implementations
+            const implementationsSection = document.getElementById('implementations');
+            implementationsSection.innerHTML = createSectionHeader('Featured Implementations') + `
+                <div class="grid md:grid-cols-2 gap-8">
+                    ${implementationsData.map((project, index) => `
+                        <div class="reveal bg-theme-surface rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-theme-primary/10 transition-all duration-300 transform hover:-translate-y-2 group h-full flex flex-col" style="transition-delay: ${index * 100}ms;">
+                            <img src="${project.imageUrl}" alt="${project.title}" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1E1E1E/ff0000?text=Image+Error';">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="font-heading text-xl font-bold text-theme-text mb-2">${project.title}</h3>
+                                <p class="text-theme-text-secondary mb-4 text-sm flex-grow">${project.description}</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    ${project.tags.map(tag => `<span class="bg-theme-primary/10 text-theme-primary text-xs font-semibold px-2.5 py-0.5 rounded-full">${tag}</span>`).join('')}
+                                </div>
+                                <a href="${project.link}" class="inline-flex items-center font-semibold text-theme-primary group-hover:underline mt-auto">View Case Study <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                            </div>
+                        </div>`).join('')}
+                </div>`;
+            
+            // Contributions (with "View Archive" logic)
+            const contributionsSection = document.getElementById('contributions');
+            const contributionsContainer = document.createElement('div');
+            contributionsContainer.innerHTML = createSectionHeader('Scholarly Contributions');
+
+            const contributionsGrid = document.createElement('div');
+            contributionsGrid.className = 'grid md:grid-cols-2 gap-6';
+
+            const renderContributions = (expanded) => {
+                const data = expanded ? contributionsData : contributionsData.slice(0, 4);
+                contributionsGrid.innerHTML = data.map((work, index) => `
+                    <div class="reveal h-full" style="transition-delay: ${index * 100}ms;">
+                      <div class="bg-theme-surface p-6 rounded-xl shadow-lg hover:shadow-2xl hover:shadow-theme-primary/10 transition-all duration-300 transform hover:-translate-y-1 group border-l-4 border-theme-primary/20 hover:border-theme-primary h-full flex flex-col">
+                           <h3 class="font-heading text-lg font-bold text-theme-text mb-2">${work.title}</h3>
+                           <p class="text-theme-text-secondary mb-4 text-sm flex-grow">${work.description}</p>
+                           <a href="${work.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center font-semibold text-theme-primary group-hover:underline mt-auto">Read Publication <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 transition-transform group-hover:translate-x-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                      </div>
+                    </div>`).join('');
+            };
+            
+            renderContributions(false);
+            contributionsContainer.appendChild(contributionsGrid);
+
+            if(contributionsData.length > 4) {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'text-center mt-12';
+                const archiveButton = document.createElement('button');
+                archiveButton.className = 'bg-theme-surface text-theme-text font-semibold px-8 py-3 rounded-lg hover:bg-opacity-80 transition-all transform hover:scale-105 shadow-lg border border-theme-primary/20 hover:border-theme-primary';
+                archiveButton.textContent = 'View Full Archive';
+                let isExpanded = false;
+                archiveButton.addEventListener('click', () => {
+                    isExpanded = !isExpanded;
+                    archiveButton.textContent = isExpanded ? 'Show Less' : 'View Full Archive';
+                    renderContributions(isExpanded);
+                });
+                buttonContainer.appendChild(archiveButton);
+                contributionsContainer.appendChild(buttonContainer);
+            }
+            contributionsSection.appendChild(contributionsContainer);
+            
+            // Technologies
+            document.getElementById('technologies').innerHTML = createSectionHeader('Technical Expertise') + `
+                <div class="flex flex-wrap justify-center gap-3">
+                    ${technologiesData.map((tech, index) => `<div class="reveal bg-theme-surface border border-transparent hover:border-theme-primary text-theme-text-secondary hover:text-theme-primary px-4 py-2 rounded-lg transition-all cursor-default shadow-md" style="transition-delay: ${index * 25}ms;">${tech}</div>`).join('')}
+                </div>`;
+                
+            // Contact
+            document.getElementById('contact').innerHTML = createSectionHeader('Connect') + `
+                <div class="reveal max-w-2xl mx-auto text-center">
+                    <p class="text-lg text-theme-text-secondary mb-8">I am currently available for consulting engagements and advisory roles. If you have a challenge that requires strategic technological leadership, I would be delighted to hear from you.</p>
+                    <div class="flex justify-center gap-6">
+                        <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="p-4 bg-theme-surface rounded-full text-theme-text-secondary hover:text-theme-primary hover:scale-110 transition-all transform duration-300 shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/></svg></a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="p-4 bg-theme-surface rounded-full text-theme-text-secondary hover:text-theme-primary hover:scale-110 transition-all transform duration-300 shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+                    </div>
+                </div>`;
+
+
+            // --- THEME LOGIC ---
+            let currentTheme = localStorage.getItem('theme') || 'dark';
+            const html = document.documentElement;
+
+            const applyTheme = (theme) => {
+                html.classList.remove(theme === 'dark' ? 'light' : 'dark');
+                html.classList.add(theme);
+                themeToggleButton.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+            }
+            applyTheme(currentTheme);
+
+            themeToggleButton.addEventListener('click', () => {
+                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', currentTheme);
+                applyTheme(currentTheme);
+            });
+            
+            // --- SCROLL LOGIC & ANIMATIONS ---
+            const navLinksOrder = ["home", "about", "implementations", "contributions", "technologies", "contact"];
+            let visibleSections = {};
+
+            const scrollObserver = new IntersectionObserver(entries => {
+                 entries.forEach(entry => {
+                    // Update visibility status of each section
+                    visibleSections[entry.target.id] = entry.isIntersecting;
+                });
+
+                // Determine the currently active section
+                let currentActiveSection = '';
+                navLinksOrder.forEach(sectionId => {
+                    if (visibleSections[sectionId]) {
+                        currentActiveSection = sectionId;
+                    }
+                });
+
+                // Update nav link styles
+                navLinks.forEach(link => {
+                    const id = link.getAttribute('data-nav-id');
+                    if (id === currentActiveSection) {
+                        link.classList.add('text-theme-primary', 'font-semibold');
+                        link.classList.remove('text-theme-text-secondary');
+                    } else {
+                        link.classList.remove('text-theme-primary', 'font-semibold');
+                        link.classList.add('text-theme-text-secondary');
+                    }
+                });
+
+            }, { rootMargin: "-40% 0px -60% 0px" });
+
+            sections.forEach(section => scrollObserver.observe(section));
+
+            const revealObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Animate section underline
+                        const underline = entry.target.querySelector('.w-24.h-1');
+                        if (underline) {
+                            underline.style.transform = 'scaleX(1)';
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+            
+            const staggerObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelectorAll('.stagger-word').forEach((word, i) => {
+                           setTimeout(() => word.classList.add('visible'), i * 150);
+                        });
+                        staggerObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('.stagger-text').forEach(el => {
+                el.innerHTML = el.textContent.split(' ').map(word => `<span class="stagger-word"><span>${word}</span></span>`).join(' ');
+                staggerObserver.observe(el);
+            });
+
+
+            const heroObserver = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting) {
+                    stickyImage.classList.add('opacity-0', 'scale-75');
+                    stickyImage.classList.remove('opacity-100', 'scale-100');
+                    heroImageContainer.classList.add('opacity-100', 'scale-100');
+                    heroImageContainer.classList.remove('opacity-0', 'scale-50');
+                } else {
+                    stickyImage.classList.remove('opacity-0', 'scale-75');
+                    stickyImage.classList.add('opacity-100', 'scale-100');
+                    heroImageContainer.classList.remove('opacity-100', 'scale-100');
+                    heroImageContainer.classList.add('opacity-0', 'scale-50');
+                }
+            }, { threshold: 0.1 });
+            
+            if (heroSection) heroObserver.observe(heroSection);
+
+
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = window.scrollY / totalHeight;
+                navProgressBar.style.height = `${progress * 100}%`;
+            }, { passive: true });
+        });
+    </script>
+</body>
+</html>
