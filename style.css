@@ -1,0 +1,84 @@
+/* Custom CSS variables for theming */
+:root {
+    --color-background: #121212;
+    --color-surface: #1E1E1E;
+    --color-primary: #D4AF37;
+    --color-text: #E0E0E0;
+    --color-text-secondary: #A0A0A0;
+}
+html.light {
+    --color-background: #F5F5F5;
+    --color-surface: #FFFFFF;
+    --color-primary: #B8860B;
+    --color-text: #212121;
+    --color-text-secondary: #5f6368;
+}
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+}
+.font-heading { font-family: 'Playfair Display', serif; }
+.font-nav { font-family: 'Oswald', sans-serif; }
+.bg-theme-background { background-color: var(--color-background); }
+.bg-theme-surface { background-color: var(--color-surface); }
+.text-theme-primary { color: var(--color-primary); }
+.text-theme-text { color: var(--color-text); }
+.text-theme-text-secondary { color: var(--color-text-secondary); }
+.bg-theme-primary { background-color: var(--color-primary); }
+.border-theme-primary { border-color: var(--color-primary); }
+.shadow-theme-primary\/20 { box-shadow: 0 4px 14px 0 rgba(212, 175, 55, 0.2); }
+.bg-theme-primary\/10 { background-color: rgba(212, 175, 55, 0.1); }
+.border-theme-primary\/20 { border-color: rgba(212, 175, 55, 0.2); }
+
+/* Orbiting Lines Animation */
+.orbiting-lines .line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+    border-radius: 50%;
+    animation: orbit 10s linear infinite;
+    opacity: 0.5;
+}
+.orbiting-lines .line:nth-child(2) { animation-duration: 12s; animation-delay: -3s; }
+.orbiting-lines .line:nth-child(3) { animation-duration: 15s; animation-delay: -5s; }
+@keyframes orbit {
+    from { transform: translate(-50%, -50%) rotate(0deg) translateX(120px) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg) translateX(120px) rotate(-360deg); }
+}
+
+/* Animate on scroll utility */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s, transform 1s;
+    transition-timing-function: ease-out;
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered Text Animation */
+.stagger-word {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.2rem;
+}
+.stagger-word > span {
+    display: inline-block;
+    transform: translateY(100%);
+    transition: transform 0.7s ease-out;
+}
+.stagger-word.visible > span {
+    transform: translateY(0);
+}
+.bg-grid-gold-900\/\[0\.1\] { 
+    background-image: linear-gradient(rgba(212, 175, 55, 0.5) 1px, transparent 1px), linear-gradient(to right, rgba(212, 175, 55, 0.5) 1px, var(--color-background) 1px); 
+    background-size: 3rem 3rem; 
+    opacity: 0.1; 
+}
